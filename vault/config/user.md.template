@@ -1,0 +1,31 @@
+# Kee — User Context
+
+> **Template.** Copy to `vault/config/user.md` and customise. Anything you
+> write here is loaded into Kee's system prompt on every turn — keep it
+> tight, skip secrets.
+
+## Identity
+- Name / handle
+- Age, role, location (high-level — full address NOT needed)
+- Primary occupation / studies
+
+## Active Projects
+- Bullet list of what you're currently working on. Used by the auto-
+  dispatch hook in `agent.process()` — mention these in your messages
+  and Kee will leave breadcrumbs in `dispatch_registry`.
+
+## Technical Stack
+- Languages, frameworks, infra you actually use day-to-day. Helps the
+  agent pick relevant tooling.
+
+## Communication Preferences
+- Tone (direct / formal / playful)
+- Default response language
+- Things to avoid (filler, emojis, follow-up offers)
+- Things you appreciate (challenge my reasoning, push back, etc.)
+
+## Contact
+- ⚠️ **Do not put phone numbers, real email, or private handles here**
+  if you intend to make this vault public. Kee uses these only when you
+  ask for an outbound message; if you do, set them via env vars instead
+  (see `.env.example`).

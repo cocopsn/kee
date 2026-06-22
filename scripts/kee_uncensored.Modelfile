@@ -1,0 +1,95 @@
+# Kee's primary local model.
+#
+# The HauhauCS HF release ships with an empty chat template
+# (`TEMPLATE {{ .Prompt }}`), which means Ollama cannot generate a tool
+# parser for it and every tool-using turn fails with "Unable to generate
+# parser for this template". Behaviour-wise this nukes the entire agent
+# loop on any input that exposes the 65-tool schema.
+#
+# This Modelfile re-wraps the same weights with the upstream Qwen3 chat
+# template (Apache 2.0), restoring the <|im_start|>/<|im_end|> markers,
+# the system/user/assistant roles, and the <tools>/<tool_call>/
+# <tool_response> XML hooks that Ollama's parser knows how to read.
+#
+# Build with:
+#   ollama create kee-uncensored:latest -f scripts/kee_uncensored.Modelfile
+
+FROM hf.co/HauhauCS/Qwen3.5-9B-Uncensored-HauhauCS-Aggressive:Q4_K_M
+
+# Reuse the official Qwen3 template (Apache 2.0) — same one qwen3:8b ships
+# with. Handles tools, thinking on/off, multi-turn assistant + tool flow.
+TEMPLATE """
+{{- $lastUserIdx := -1 -}}
+{{- range $idx, $msg := .Messages -}}
+{{- if eq $msg.Role "user" }}{{ $lastUserIdx = $idx }}{{ end -}}
+{{- end }}
+{{- if or .System .Tools }}<|im_start|>system
+{{ if .System }}
+{{ .System }}
+{{- end }}
+{{- if .Tools }}
+
+# Tools
+
+You may call one or more functions to assist with the user query.
+
+You are provided with function signatures within <tools></tools> XML tags:
+<tools>
+{{- range .Tools }}
+{"type": "function", "function": {{ .Function }}}
+{{- end }}
+</tools>
+
+For each function call, return a json object with function name and arguments within <tool_call></tool_call> XML tags:
+<tool_call>
+{"name": <function-name>, "arguments": <args-json-object>}
+</tool_call>
+{{- end -}}
+<|im_end|>
+{{ end }}
+{{- range $i, $_ := .Messages }}
+{{- $last := eq (len (slice $.Messages $i)) 1 -}}
+{{- if eq .Role "user" }}<|im_start|>user
+{{ .Content }}
+{{- if and $.IsThinkSet (eq $i $lastUserIdx) }}
+   {{- if $.Think -}}
+      {{- " "}}/think
+   {{- else -}}
+      {{- " "}}/no_think
+   {{- end -}}
+{{- end }}<|im_end|>
+{{ else if eq .Role "assistant" }}<|im_start|>assistant
+{{ if (and $.IsThinkSet (and .Thinking (or $last (gt $i $lastUserIdx)))) -}}
+<think>{{ .Thinking }}</think>
+{{ end -}}
+{{ if .Content }}{{ .Content }}
+{{- else if .ToolCalls }}<tool_call>
+{{ range .ToolCalls }}{"name": "{{ .Function.Name }}", "arguments": {{ .Function.Arguments }}}
+{{ end }}</tool_call>
+{{- end }}{{ if not $last }}<|im_end|>
+{{ end }}
+{{- else if eq .Role "tool" }}<|im_start|>user
+<tool_response>
+{{ .Content }}
+</tool_response><|im_end|>
+{{ end }}
+{{- if and (ne .Role "assistant") $last }}<|im_start|>assistant
+{{ if and $.IsThinkSet (not $.Think) -}}
+<think>
+
+</think>
+
+{{ end -}}
+{{ end }}
+{{- end }}"""
+
+# Qwen3 stop tokens (mirrors qwen3:8b).
+PARAMETER stop "<|im_start|>"
+PARAMETER stop "<|im_end|>"
+
+# Slightly lower temp + nucleus for crisper tool emission. The HauhauCS
+# tune likes to ramble at default 0.7.
+PARAMETER temperature 0.6
+PARAMETER top_k 20
+PARAMETER top_p 0.95
+PARAMETER repeat_penalty 1.0

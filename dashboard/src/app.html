@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es" class="dark">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="%sveltekit.assets%/favicon.svg" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif&display=swap"
+        />
+        <title>Kee</title>
+        %sveltekit.head%
+    </head>
+    <body data-sveltekit-preload-data="hover" class="text-zinc-100 antialiased">
+        <!-- Body bg moved into the root layout (.app-bg div) so the hologram
+             route can opt-out by simply not rendering that wrapper. -->
+        <div style="display: contents">%sveltekit.body%</div>
+        <script>
+            // Hologram mode: solid dark backdrop (no transparency). Win32
+            // colorkey approach failed on WebView2 (made everything
+            // click-through). Trade off documented in kee/desktop/app.py.
+            (function() {
+                if (location.pathname.endsWith('/hologram') || location.pathname.endsWith('/hologram/')) {
+                    document.documentElement.style.background = '#0A0A0F';
+                    document.body.style.background = '#0A0A0F';
+                    document.body.classList.add('hologram-mode');
+                }
+            })();
+        </script>
+    </body>
+</html>

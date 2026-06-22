@@ -1,0 +1,20 @@
+# Kee — Goals
+
+> **Template.** Copy to `vault/config/goals.md`. Each `## Goal title` is
+> parsed by `kee/perception/goals.py`; bulleted `**Key**: value` lines
+> become structured fields. The heartbeat surfaces deadlines that are
+> ≤7 days away as actionables.
+
+## Example goal
+- **Status**: active        ← active | paused | completed | abandoned
+- **Deadline**: 2026-12-31  ← YYYY-MM-DD
+- **Project**: kee          ← any project slug from your dispatch_registry
+- **Progress**: 30%
+- Bullet describing milestones, blockers, recent moves
+- Another bullet
+
+## Another example goal
+- **Status**: active
+- **Deadline**: 2026-08-15
+- **Project**: studies
+- Whatever else — free-form bullets after the structured ones.

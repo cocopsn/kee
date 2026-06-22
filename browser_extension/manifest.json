@@ -1,0 +1,31 @@
+{
+    "manifest_version": 3,
+    "name": "Kee Bridge",
+    "version": "0.1.0",
+    "description": "Forward Web Notifications API events to Kee at http://127.0.0.1:7330/notifications/inbound. Right-click → Send selection to Kee inbox.",
+    "permissions": ["activeTab", "scripting", "contextMenus", "storage", "notifications"],
+    "host_permissions": [
+        "http://127.0.0.1:7330/*",
+        "https://web.whatsapp.com/*",
+        "https://app.slack.com/*",
+        "https://discord.com/channels/*",
+        "https://web.telegram.org/*",
+        "https://mail.google.com/*"
+    ],
+    "background": { "service_worker": "background.js" },
+    "content_scripts": [
+        {
+            "matches": [
+                "https://web.whatsapp.com/*",
+                "https://app.slack.com/*",
+                "https://discord.com/channels/*",
+                "https://web.telegram.org/*"
+            ],
+            "js": ["content_notifications.js"],
+            "run_at": "document_idle"
+        }
+    ],
+    "action": {
+        "default_title": "Kee Bridge — click to send page title to inbox"
+    }
+}

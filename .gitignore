@@ -1,0 +1,108 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Kee runtime data
+data/*.db
+data/*.db-journal
+data/*.db-wal
+data/*.db-shm
+# models/ is treated like data/ — runtime artefacts, regenerable.
+models/*
+!models/.gitkeep
+!models/wakeword/.gitkeep
+
+# Logs
+vault/logs/audit/*.log
+vault/logs/heartbeat/*.log
+
+# Kee workspace (where Kee builds things via claude_code etc.)
+workspaces/
+kee-workspace/
+
+# npm globals reconfigured to D:/Kee/node-globals to dodge the WindowsApps
+# Python sandbox issue. Don't ship these to the repo — they're transient
+# and reproducible from package.json.
+node-globals/
+
+# Ollama daemon log
+data/ollama*.log
+
+# Generated tools (vault is synced via Syncthing — generated tools should sync too,
+# but exclude __pycache__)
+vault/_kee/tools/__pycache__/
+
+# Obsidian
+.obsidian/workspace*
+.obsidian/cache
+
+# Sensitive credentials / OAuth tokens / runtime artefacts.
+# Treat data/ as a runtime sandbox — nothing in here is source-of-truth,
+# everything gets regenerated. Keep the dir, ignore everything inside.
+data/*
+!data/.gitkeep
+
+# Large transient build artefacts
+dashboard/node_modules/
+dashboard/.svelte-kit/
+dashboard/build/
+
+# WSL wake-word training scratch (multi-GB derived data)
+wsl-training-data/
+
+# Behavioural snapshots — generated, may include personal patterns
+vault/config/user_behavior.json
+vault/config/fleet.json
+vault/config/watchlist.json
+
+# Misc temp
+.tmp/
+*.tmp
+
+# ── Personal files (never commit to public repo) ─────────────────────────
+# These are user-specific. Templates live in vault/config/*.template.md
+# and at-rest copies are created by `scripts/setup_personal.py`.
+
+# Personal vault content
+vault/config/user.md
+vault/config/identity.md
+vault/config/soul.md
+vault/config/goals.md
+vault/projects/
+vault/_kee/
+vault/.obsidian/
+
+# Session logs / audits / reports
+AUDIT-*.md
+REPORT-*.md
+TEST-FLOW.md
+DESIGN-*.md
+PRIVATE-*.md
+
+# Local copies of public docs (your personal README / CLAUDE / STATUS)
+*.local.md
+.claude/

@@ -1,0 +1,111 @@
+[project]
+name = "kee"
+version = "0.1.0"
+description = "Sovereign autonomous AI agent — voice-first, multi-surface, perception + memory + action."
+authors = [{ name = "Armando \"Coco\"" }]
+requires-python = ">=3.12"
+readme = "README.md"
+license = { text = "Proprietary" }
+
+dependencies = [
+    # Core agent
+    "ollama>=0.4",
+    "httpx>=0.27",
+    "pydantic>=2.0",
+    "python-dotenv>=1.0",
+
+    # CLI surface
+    "rich>=13",
+
+    # Filesystem / vault
+    "watchdog>=4.0",
+
+    # System status (cross-platform)
+    "psutil>=6.0",
+
+    # Active window perception — Windows-only path; on Linux we fall back
+    # to `xdotool` via subprocess in `kee/perception/window.py`.
+    "pygetwindow>=0.0.9 ; sys_platform == 'win32'",
+
+    # Phase 3 surgical RAG: ONNX-based reranker, no torch dependency.
+    "flashrank>=0.2",
+
+    # Phase 3 notifications.
+    "winotify>=1.1 ; sys_platform == 'win32'",
+
+    # Wake-word recording script (Phase 2 prep).
+    "sounddevice>=0.5",
+    "scipy>=1.14",
+
+    # Note: ChromaDB access in Phase 3 uses raw httpx (chroma_client.py),
+    # so no chromadb client lib is needed here.
+]
+
+[project.optional-dependencies]
+voice = [
+    "openwakeword>=0.6",
+    "faster-whisper>=1.1",
+    "sounddevice>=0.5",
+    "silero-vad>=5.1",
+    "piper-tts>=1.2",
+]
+perception = [
+    "paddleocr>=2.9",
+    "mss>=10",
+]
+web = [
+    "fastapi>=0.115",
+    "uvicorn>=0.32",
+    "websockets>=13",
+]
+messaging = [
+    "python-telegram-bot>=21",
+]
+distributed = [
+    "paramiko>=3.5",
+]
+browser = [
+    "playwright>=1.49",
+]
+desktop = [
+    # pywebview shell + dependencies
+    "pywebview>=6.2",
+    "pythonnet>=3.0 ; sys_platform == 'win32'",
+    # Tray icon (optional)
+    "pystray>=0.19",
+    "Pillow>=10.0",
+]
+tools_extras = [
+    # New tools added in 2026-05-04 audit batch
+    "pyperclip>=1.9",
+    "pycaw>=20240210 ; sys_platform == 'win32'",
+    "screen-brightness-control>=0.24",
+    # ElevenLabs MP3 playback (free / paid TTS)
+    "miniaudio>=1.59",
+]
+voice_premium = [
+    # Optional: ElevenLabs requires a paid API key (see .env.example)
+    # The synth itself is plain HTTPS — no SDK needed
+]
+dev = [
+    "pytest>=8",
+    "pytest-asyncio>=0.24",
+    "ruff>=0.7",
+]
+
+[project.scripts]
+kee = "kee.main:run"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["kee"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
