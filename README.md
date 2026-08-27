@@ -5,17 +5,19 @@ memory, perception, and the ability to act on your machine. Runs on your
 hardware (Ollama for free local inference) and falls back to Anthropic /
 OpenAI when you opt in.
 
-> **Status:** ~55 tools, 25 regression suites (all $0), Sleep Cycle with
-> 11 daily phases, smart notification routing, plan/focus/learn/recall
+> **Status:** **65 tools**, **37 regression suites** (all $0), Sleep Cycle with
+> **14 daily phases**, smart notification routing, plan/focus/learn/recall
 > persistence, cross-process WS reactivity. See [`STATUS.md`](STATUS.md)
-> for the running build log.
+> for the running build log and
+> [`docs/05-full-inventory.md`](docs/05-full-inventory.md) for the tool inventory
+> (measured 2026-08-27: `kee/tools/` holds 65 modules).
 
 ## What Kee can do
 
 - **Talk back to you.** Wake-word triggers (silero VAD + Whisper STT),
   Piper / ElevenLabs TTS, full-duplex barge-in, ambient sound
   classification, multi-language (Spanish + English).
-- **Run on you.** 55+ tools covering filesystem, shell, web search,
+- **Run on you.** 65 tools covering filesystem, shell, web search,
   browser automation (Playwright + Chromium), git, GitHub CLI, Vercel
   deploy, Obsidian vault, calendar, gmail, whatsapp, telegram, weather,
   news, screen capture, Spotify, Home Assistant, Wake-on-LAN.

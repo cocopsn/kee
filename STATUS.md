@@ -8,9 +8,10 @@ Updated: **2026-05-04**
 
 ## Current state
 
-- **64 tools** registered. Inventory + descriptions: see
-  `python -m kee.main check` or `GET /tools` from the API.
-- **35 regression suites** under `tests/`, all $0 (no LLM in CI).
+- **65 tools** registered (`kee/tools/` holds 65 modules; verified 2026-08-27).
+  Inventory + descriptions: see `python -m kee.main check`, `GET /tools` from
+  the API, or [`docs/05-full-inventory.md`](docs/05-full-inventory.md).
+- **37 regression suites** under `tests/`, all $0 (no LLM in CI).
   Runner: `python tests/run_all.py`. Plus a 4-case integration suite
   (`test_real_rag.py`) gated by `KEE_TEST_REAL_RAG=1` for live worker
   verification.

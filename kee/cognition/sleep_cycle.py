@@ -1,6 +1,9 @@
 """Sleep Cycle daemon — Kee's REM phase.
 
-Runs at 04:00 local each day. Six phases, each independent and resumable:
+Runs at 04:00 local each day. Fourteen phases, each independent and resumable
+(the numbered list below covers the first seven; the rest — self-evolution,
+plan-commit-linker, backup, episodic index, worker re-index, stale-plan
+archival and tool-evolution — run after `_phase_digest` in `run()`):
 
   1. **Summarize** every conversation from the last 24h that doesn't yet
      have a summary persisted to `conversations.summary`.

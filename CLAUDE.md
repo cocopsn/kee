@@ -18,7 +18,7 @@ in. Templates for the personal files live next to them as
 
 Surfaces (terminal / voice / chat / api / telegram / notif-bridge) call
 `KeeAgent.process()`. The agent runs a reasoning loop, calls tools from
-the central registry (≈55 tools, schema-validated), and routes LLM calls
+the central registry (65 tools, schema-validated), and routes LLM calls
 through a 4-provider chain (Claude Sonnet + Haiku + GPT-4o-mini + Ollama)
 with a 5-tier router and a `$/day` kill switch. Memory + audit + plans
 + focus + learnings + dispatches + scheduled callbacks all live in one

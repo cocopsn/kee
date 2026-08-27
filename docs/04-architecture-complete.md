@@ -53,7 +53,7 @@ solo cuando el commit subject solapa tokens con la tarea.
 
 `KEE_DAILY_COST_CAP_USD=2` por default. El `cost_tracker` mide cada
 call paga, y al llegar al cap fuerza Ollama hasta medianoche. La
-suite de regresión (35 tests) corre **$0** — `_FakeLLM` stubs
+suite de regresión (37 archivos) corre **$0** — `_FakeLLM` stubs
 reemplazan cualquier `llm.chat()`. Ningún test paga.
 
 ### 2.5 Soberanía + safety = dos bucles encadenados
@@ -95,7 +95,7 @@ de aceptarla. `tool_gc` archiva probationary tools no usadas en 7 días.
                 v                    v                    v
         ┌──────────────┐    ┌─────────────────┐    ┌──────────────┐
         │ Tool Registry│    │     Router      │    │   Memory     │
-        │  (64 tools)  │───▶│ vault/config/   │───▶│  SQLite +    │
+        │  (65 tools)  │───▶│ vault/config/   │───▶│  SQLite +    │
         │              │    │   router.md     │    │  ChromaDB    │
         └──────┬───────┘    │ 5-tier classify │    └──────────────┘
                │            └────────┬────────┘
@@ -298,7 +298,7 @@ WhatsApp Web, Slack, Discord, Telegram Web y forwardea a
 
 ---
 
-## 6. Tool registry — las 64 tools
+## 6. Tool registry — las 65 tools
 
 Source de verdad: `kee/core/tool_registry.py::load_builtins()` +
 `vault/_kee/tools/*.py` para custom probationary. Cada tool extiende
@@ -795,7 +795,7 @@ curl localhost:8000/quality/lifetime   # QA score over time
 ### File paths críticos
 ```
 kee/core/agent.py                  # reasoning loop
-kee/core/tool_registry.py          # 64 tools, hallucination filters
+kee/core/tool_registry.py          # 65 tools, hallucination filters
 kee/core/db.py                     # SQLite schema + migrations
 kee/core/llm/chain.py              # provider fallback
 kee/core/router.py                 # 5-tier classifier
